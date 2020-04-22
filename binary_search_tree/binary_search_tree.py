@@ -10,14 +10,73 @@ class BinarySearchTree:
         self.left = None
         self.right = None
 
-    # Insert the given value into the tree
     def insert(self, value):
-        pass
+        if value < self.value:
+
+            if self.left:
+                self.left.insert(value)
+            else: 
+                self.left = BinarySearchTree(value)
+
+        else:
+            if self.right:
+                self.right.insert(value)
+            else:
+                self.right = BinarySearchTree(value)
 
     # Return True if the tree contains the value
-    # False if it does not
+    # False if it does not 
     def contains(self, target):
-        pass
+        if self.value is target:
+            return True
+        elif self.value < target:
+            if self.right is None:
+                return False
+            else:
+                return BinarySearchTree.contains(self.right, target)
+        else:
+            if self.left is None:
+                return False
+            else:
+                return BinarySearchTree.contains(self.left, target)
+
+    
+#     def contains(self, target):
+#         if self.value is target:
+#             print("Check Node")
+#             return True 
+#         elif self.left:
+#             print("Check Left")
+#             if self.left.value is target:
+#                 print("Check Left Node")
+#                 return True
+#             elif self.left.contains(target):
+#                 print("Call contains on Left Node")
+#                 return True
+#             elif self.right:
+#                 print("Check Right within Left")
+#                 if self.right.contains(target):
+#                     print("Call contains on Right Node within Left Node")
+#                     return True
+
+#         elif self.right:
+#             print("Check Right")
+#             if self.right.value is target:
+#                 print("Check Right Node")
+#                 return True
+#             elif self.right.contains(target):
+#                 print("Call contains on Right Node")
+#                 return True
+#             elif self.left: 
+#                 print("Check Left within Right")
+#                 if self.left.contains(target):
+#                     print("Call contains on Left Node within Right Node")
+#                     return True
+#         else:
+#             return False 
+#             print("Return when not found")
+#             return False 
+
 
     # Return the maximum value found in the tree
     def get_max(self):

@@ -1,4 +1,4 @@
-from doubly_linked_list import *
+from doubly_linked_list import DoublyLinkedList
 
 class LRUCache:
     """
@@ -9,13 +9,16 @@ class LRUCache:
     to every node stored in the cache.
     """
     def __init__(self, limit=10):
-        self.max_modes = limit 
-        self.node_count = 0 
-        self.DLL = DoublyLinkedList() 
+        self.limit = limit 
+        self.size = 0 
+        self.ordering = DoublyLinkedList() 
         self.storage = dict() 
 
+        def __len__(self):
+            return self.size 
+
         for item in self.storage:
-            self.DLL.add_to_head(item)
+            self.ordering.add_to_head(item)
 
     """
     Retrieves the value associated with the given key. Also
@@ -25,8 +28,12 @@ class LRUCache:
     key-value pair doesn't exist in the cache.
     """
     def get(self, key):
-        return self.storage(key)
-        self.DLL.move_to_front
+        if key in self.storage:
+            node = self.storage(key)
+            self.ordering.move_to_end(node)
+            return node.value[1]
+        else:
+            return None
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -39,4 +46,16 @@ class LRUCache:
     the newly-specified value.
     """
     def set(self, key, value):
-        pass
+        if key in self.storage:
+            node = self.storage[key]
+            node.value = (key, value)
+            self.ordering.move_to_end(node)
+            return
+        if self.size is self.limit:
+            oldest_key = self.ordering.head.value[0]
+            del self.storage[oldest_key]
+            self.ordering.remove_from_head()
+            self.size -= 1
+        self.ordering.add_to_tail((key, value))
+        self.storage[key] = self.ordering.tail
+        self.size += 1
